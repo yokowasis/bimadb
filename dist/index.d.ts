@@ -11,6 +11,7 @@ declare class BimaDB {
     eq: (key: string, value: string) => this;
     clearProps: () => void;
     constructor(apiURL: string);
+    doCustom: (endpoint: string, method: string, body: any) => Promise<any>;
     doLogin: (username: string, password: string) => Promise<Boolean>;
     doUpdate: (data: TypeOfObjectString) => Promise<{
         msg: {

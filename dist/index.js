@@ -26,6 +26,28 @@ class BimaDB {
             this.table = "";
             this.where = {};
         };
+        this.doCustom = (endpoint, method, body) => __awaiter(this, void 0, void 0, function* () {
+            return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
+                fetch(`${this.apiURL}${endpoint}`, {
+                    method,
+                    headers: {
+                        Accept: "application/json",
+                        Authorization: `Bearer ${localStorage.getItem("jwt") || ""}`,
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(body),
+                })
+                    .then((res) => res.json())
+                    .then((result) => {
+                    this.clearProps();
+                    resolve(result);
+                })
+                    .catch((err) => {
+                    this.clearProps();
+                    reject(err);
+                });
+            }));
+        });
         this.doLogin = (username, password) => __awaiter(this, void 0, void 0, function* () {
             return new Promise((resolve) => __awaiter(this, void 0, void 0, function* () {
                 fetch(`${this.apiURL}login`, {
