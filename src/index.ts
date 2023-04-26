@@ -26,6 +26,34 @@ class BimaDB {
     this.apiURL = apiURL;
   }
 
+  doCustom = async (
+    endpoint: string,
+    method: string,
+    body: any
+  ): Promise<any> => {
+    return new Promise(async (resolve, reject) => {
+      fetch(`${this.apiURL}${endpoint}`, {
+        method,
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${localStorage.getItem("jwt") || ""}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      })
+        .then((res) => res.json())
+
+        .then((result) => {
+          this.clearProps();
+          resolve(result);
+        })
+        .catch((err) => {
+          this.clearProps();
+          reject(err);
+        });
+    });
+  };
+
   doLogin = async (username: string, password: string): Promise<Boolean> => {
     return new Promise(async (resolve) => {
       fetch(`${this.apiURL}login`, {
